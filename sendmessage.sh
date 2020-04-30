@@ -1,8 +1,8 @@
 #!/bin/bash
-
+export AWS_DEFAULT_REGION=ap-southeast-2
 echo $1
 
-for ((i=0;i<$1;i++));
+for ((i=1;i<=$1;i++));
 do
 
 message=$(LC_CTYPE=C tr -dc A-Za-z0-9 < /dev/urandom | head -c 10 | xargs)
