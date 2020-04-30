@@ -18,8 +18,8 @@ else
   Body=$(echo $message | jq -r '.Messages[0].Body')
   Handle=$(echo $message | jq -r '.Messages[0].ReceiptHandle')
 
-  echo $Body
-  echo $Handle
+  echo "Body:" $Body
+  echo "ReceiptHandle:" $Handle
   echo "sleeping 30"
   sleep 30
 
