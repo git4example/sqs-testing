@@ -8,7 +8,7 @@ aws sqs get-queue-attributes --queue-url 	https://sqs.ap-southeast-2.amazonaws.c
 ```json
 {
     "Attributes": {
-        "ApproximateNumberOfMessages": "879"
+        "ApproximateNumberOfMessages": "10"
     }
 }
 ```
@@ -18,7 +18,7 @@ aws sqs get-queue-attributes --queue-url 	https://sqs.ap-southeast-2.amazonaws.c
 aws ecs describe-services --cluster CapacityProviderCluster  --service receive
 ```
 
-### Create application auto0-scaling policy to the ECS service 
+### Create application auto-scaling target tracking policy based on custom metrics for ECS service
 ```bash
 aws application-autoscaling put-scaling-policy \
     --service-namespace ecs \
@@ -52,7 +52,7 @@ aws application-autoscaling delete-scaling-policy --policy-name cpu_target --sca
 ```bash
 while sleep 60; do 
 
-aws cloudwatch put-metric-data --metric-name MySQSBacklogPerTask --namespace MySQSNamespace --unit None --value $(aws sqs get-queue-attributes --queue-url https://sqs.ap-southeast-2.amazonaws.com/064250592128/SQS4ECS --attribute-names ApproximateNumberOfMessages --query 'Attributes.ApproximateNumberOfMessages' --output text);
+aws cloudwatch put-metric-data --metric-name MySQSBacklogPerTask --namespace MySQSNamespace --unit Count --value $(aws sqs get-queue-attributes --queue-url https://sqs.ap-southeast-2.amazonaws.com/064250592128/SQS4ECS --attribute-names ApproximateNumberOfMessages --query 'Attributes.ApproximateNumberOfMessages' --output text);
 
 done
 ```
