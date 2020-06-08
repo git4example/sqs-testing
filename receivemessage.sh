@@ -3,6 +3,7 @@
 echo "Processing for" $1 "message(s)"
 export AWS_DEFAULT_REGION=ap-southeast-2
 
+#Set Number of message to process
 if [ ! -n "$NO_MESSAGES_TO_PROCESS" ]
 then
   echo "No of messages to process set to default 1"
@@ -11,16 +12,16 @@ else
   echo "No of messages to process set to " $NO_MESSAGES_TO_PROCESS
 fi
 
+#Set Time to process each message
 if [ ! -n "$WAIT_TIME_TO_PROCESS_MESSAGE" ]
 then
   echo "Wait time to process message set to default 30"
   export WAIT_TIME_TO_PROCESS_MESSAGE=30
 else
   echo "Wait time to process message set to " $WAIT_TIME_TO_PROCESS_MESSAGE
-else 
-
 fi
 
+#Set time to wait before next message
 if [ ! -n "$WAIT_BEFORE_NEXT_MESSAGE" ]
 then
   echo "Wait time to process next message set to default 30"
