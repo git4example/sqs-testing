@@ -40,7 +40,7 @@ if [ ! -n "$message" ]
 then
   echo "No messages found, do nothing"
 else
-  echo "Process message " $i "& wait 30 sec to delete message"
+  echo "Process message " $i "& wait " $WAIT_TIME_TO_PROCESS_MESSAGE " sec to delete message"
   Body=$(echo $message | jq -r '.Messages[0].Body')
   Handle=$(echo $message | jq -r '.Messages[0].ReceiptHandle')
 
