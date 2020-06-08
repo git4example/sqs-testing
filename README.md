@@ -31,7 +31,7 @@ docker run -it -e NO_MESSAGES_TO_SEND=10 --entrypoint ./sendmessage.sh hello2par
 
 ### Get SQS message queue ApproximateNumberOfMessages attribute 
 ```bash
-aws sqs get-queue-attributes --queue-url 	https://sqs.ap-southeast-2.amazonaws.com/064250592128/SQS4ECS --attribute-names ApproximateNumberOfMessages
+aws sqs get-queue-attributes --queue-url https://sqs.ap-southeast-2.amazonaws.com/064250592128/SQS4ECS --attribute-names ApproximateNumberOfMessages
 ```
 
 ```json
@@ -45,6 +45,98 @@ aws sqs get-queue-attributes --queue-url 	https://sqs.ap-southeast-2.amazonaws.c
 ###  Describe ECS service
 ```bash
 aws ecs describe-services --cluster CapacityProviderCluster  --service receive
+```
+
+```json
+{
+    "services": [
+        {
+            "serviceArn": "arn:aws:ecs:ap-southeast-2:064250592128:service/CapacityProviderCluster/receive",
+            "serviceName": "receive",
+            "clusterArn": "arn:aws:ecs:ap-southeast-2:064250592128:cluster/CapacityProviderCluster",
+            "loadBalancers": [],
+            "serviceRegistries": [],
+            "status": "ACTIVE",
+            "desiredCount": 0,
+            "runningCount": 0,
+            "pendingCount": 0,
+            "capacityProviderStrategy": [
+                {
+                    "capacityProvider": "CapacityProvider-pvt-ap-southeast-2c",
+                    "weight": 1,
+                    "base": 0
+                },
+                {
+                    "capacityProvider": "CapacityProvider-pvt-ap-southeast-2b",
+                    "weight": 1,
+                    "base": 0
+                },
+                {
+                    "capacityProvider": "CapacityProvider-pvt-ap-southeast-2a",
+                    "weight": 1,
+                    "base": 0
+                }
+            ],
+            "taskDefinition": "arn:aws:ecs:ap-southeast-2:064250592128:task-definition/sqs-receivemessage:5",
+            "deploymentConfiguration": {
+                "maximumPercent": 200,
+                "minimumHealthyPercent": 100
+            },
+            "deployments": [
+                {
+                    "id": "ecs-svc/8948913316662804029",
+                    "status": "PRIMARY",
+                    "taskDefinition": "arn:aws:ecs:ap-southeast-2:064250592128:task-definition/sqs-receivemessage:5",
+                    "desiredCount": 0,
+                    "pendingCount": 0,
+                    "runningCount": 0,
+                    "createdAt": "2020-06-08T17:51:37.826000+10:00",
+                    "updatedAt": "2020-06-08T17:51:41.556000+10:00",
+                    "capacityProviderStrategy": [
+                        {
+                            "capacityProvider": "CapacityProvider-pvt-ap-southeast-2c",
+                            "weight": 1,
+                            "base": 0
+                        },
+                        {
+                            "capacityProvider": "CapacityProvider-pvt-ap-southeast-2b",
+                            "weight": 1,
+                            "base": 0
+                        },
+                        {
+                            "capacityProvider": "CapacityProvider-pvt-ap-southeast-2a",
+                            "weight": 1,
+                            "base": 0
+                        }
+                    ]
+                }
+            ],
+            "events": [
+                {
+                    "id": "41f9008a-42e1-4398-8818-1f982fce79b3",
+                    "createdAt": "2020-06-08T17:51:41.563000+10:00",
+                    "message": "(service receive) has reached a steady state."
+                }
+            ],
+            "createdAt": "2020-06-08T17:51:37.826000+10:00",
+            "placementConstraints": [],
+            "placementStrategy": [
+                {
+                    "type": "spread",
+                    "field": "attribute:ecs.availability-zone"
+                },
+                {
+                    "type": "spread",
+                    "field": "instanceId"
+                }
+            ],
+            "schedulingStrategy": "REPLICA",
+            "enableECSManagedTags": true,
+            "propagateTags": "NONE"
+        }
+    ],
+    "failures": []
+}
 ```
 
 ### Create application auto-scaling target tracking policy based on custom metrics for ECS service
@@ -61,7 +153,7 @@ aws application-autoscaling put-scaling-policy \
 ### config.json
 ```json
 {
-    "TargetValue":1.0,
+    "TargetValue":100,
     "CustomizedMetricSpecification":{
         "MetricName":"MySQSBacklogPerTask",
         "Namespace":"MySQSNamespace",
@@ -78,13 +170,107 @@ aws application-autoscaling put-scaling-policy \
 aws application-autoscaling delete-scaling-policy --policy-name cpu_target --scalable-dimension ecs:service:DesiredCount --resource-id service/CapacityProviderCluster/receive --service-namespace ecs
 ```
 
+###  Describe ECS service
+```bash
+aws ecs describe-services --cluster CapacityProviderCluster  --service receive
+```
+
+```json
+{
+    "services": [
+        {
+            "serviceArn": "arn:aws:ecs:ap-southeast-2:064250592128:service/CapacityProviderCluster/receive",
+            "serviceName": "receive",
+            "clusterArn": "arn:aws:ecs:ap-southeast-2:064250592128:cluster/CapacityProviderCluster",
+            "loadBalancers": [],
+            "serviceRegistries": [],
+            "status": "ACTIVE",
+            "desiredCount": 0,
+            "runningCount": 0,
+            "pendingCount": 0,
+            "capacityProviderStrategy": [
+                {
+                    "capacityProvider": "CapacityProvider-pvt-ap-southeast-2c",
+                    "weight": 1,
+                    "base": 0
+                },
+                {
+                    "capacityProvider": "CapacityProvider-pvt-ap-southeast-2b",
+                    "weight": 1,
+                    "base": 0
+                },
+                {
+                    "capacityProvider": "CapacityProvider-pvt-ap-southeast-2a",
+                    "weight": 1,
+                    "base": 0
+                }
+            ],
+            "taskDefinition": "arn:aws:ecs:ap-southeast-2:064250592128:task-definition/sqs-receivemessage:5",
+            "deploymentConfiguration": {
+                "maximumPercent": 200,
+                "minimumHealthyPercent": 100
+            },
+            "deployments": [
+                {
+                    "id": "ecs-svc/8948913316662804029",
+                    "status": "PRIMARY",
+                    "taskDefinition": "arn:aws:ecs:ap-southeast-2:064250592128:task-definition/sqs-receivemessage:5",
+                    "desiredCount": 0,
+                    "pendingCount": 0,
+                    "runningCount": 0,
+                    "createdAt": "2020-06-08T17:51:37.826000+10:00",
+                    "updatedAt": "2020-06-08T17:51:41.556000+10:00",
+                    "capacityProviderStrategy": [
+                        {
+                            "capacityProvider": "CapacityProvider-pvt-ap-southeast-2c",
+                            "weight": 1,
+                            "base": 0
+                        },
+                        {
+                            "capacityProvider": "CapacityProvider-pvt-ap-southeast-2b",
+                            "weight": 1,
+                            "base": 0
+                        },
+                        {
+                            "capacityProvider": "CapacityProvider-pvt-ap-southeast-2a",
+                            "weight": 1,
+                            "base": 0
+                        }
+                    ]
+                }
+            ],
+            "events": [
+                {
+                    "id": "41f9008a-42e1-4398-8818-1f982fce79b3",
+                    "createdAt": "2020-06-08T17:51:41.563000+10:00",
+                    "message": "(service receive) has reached a steady state."
+                }
+            ],
+            "createdAt": "2020-06-08T17:51:37.826000+10:00",
+            "placementConstraints": [],
+            "placementStrategy": [
+                {
+                    "type": "spread",
+                    "field": "attribute:ecs.availability-zone"
+                },
+                {
+                    "type": "spread",
+                    "field": "instanceId"
+                }
+            ],
+            "schedulingStrategy": "REPLICA",
+            "enableECSManagedTags": true,
+            "propagateTags": "NONE"
+        }
+    ],
+    "failures": []
+}
+```
+
 # Create custom metric and set ECS Target tracking based on SQS messages queue length : 
 
 ### Now Put custom metric every 1 min : 
-```bash
-while sleep 60; do 
-value=$(aws sqs get-queue-attributes --queue-url https://sqs.ap-southeast-2.amazonaws.com/064250592128/SQS4ECS --attribute-names ApproximateNumberOfMessages --query 'Attributes.ApproximateNumberOfMessages' --output text)
-echo "Put Metrics" $value
-aws cloudwatch put-metric-data --metric-name MySQSBacklogPerTask --namespace MySQSNamespace --unit Count --value $value;
-done
-```
+
+Use put_metrics.sh script to post metrics every 60 sec.
+
+

@@ -1,0 +1,11 @@
+{
+    "TargetValue":1.0,
+    "CustomizedMetricSpecification":{
+        "MetricName":"MySQSBacklogPerTask",
+        "Namespace":"MySQSNamespace",
+        "Statistic":"Average",
+        "Unit":"Count"
+    },
+    "ScaleOutCooldown": 60,
+    "ScaleInCooldown": 60
+}
