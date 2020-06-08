@@ -153,20 +153,9 @@ aws application-autoscaling put-scaling-policy \
     --target-tracking-scaling-policy-configuration file://config.json
 ```
 
-### config.json
-```json
-{
-    "TargetValue":100,
-    "CustomizedMetricSpecification":{
-        "MetricName":"MySQSBacklogPerTask",
-        "Namespace":"MySQSNamespace",
-        "Statistic":"Average",
-        "Unit":"Count"
-    },
-    "ScaleOutCooldown": 60,
-    "ScaleInCooldown": 60
-}
-```
+Note : 
+Unit : Count makes scaling as 2,4,8,16..etc
+Need to try .. Unit : Percent to make more Proportional scaling ..   
 
 ### Delete default target tracking policy for ECS Service 
 ```bash
