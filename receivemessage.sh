@@ -1,6 +1,5 @@
 #!/bin/bash
 
-echo "Processing for" $1 "message(s)"
 export AWS_DEFAULT_REGION=ap-southeast-2
 
 #Set Number of message to process
