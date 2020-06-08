@@ -1,12 +1,13 @@
 # sqs-testing
 
-How to run : 
+### How to run : 
 ```
 run ./receivemessage.sh <number of message>
 
 run ./sendmessage.sh <number of message>
 ```
-Build docker :
+
+### Build docker :
 ```
 git clone https://github.com/hello2parikshit/sqs-testing.git
 
@@ -26,8 +27,10 @@ Else use to send messages to the sqs, default 1 message :
 docker run -it -e NO_MESSAGES_TO_SEND=10 --entrypoint ./sendmessage.sh hello2parikshit/sqs-testing 
 ```
 
+ 
 # How to create Target tracking ECS service autoscaling based on custom metrics, SQS Message queue length.
 
+ECS Target tracking based on SQS messages queue length
 
 ### Get SQS message queue ApproximateNumberOfMessages attribute 
 ```bash
@@ -267,7 +270,7 @@ aws ecs describe-services --cluster CapacityProviderCluster  --service receive
 }
 ```
 
-# Create custom metric and set ECS Target tracking based on SQS messages queue length : 
+# Put custom metric : 
 
 ### Now Put custom metric every 1 min : 
 
