@@ -2,7 +2,15 @@
 export AWS_DEFAULT_REGION=ap-southeast-2
 echo $1
 
-for ((i=1;i<=$1;i++));
+if [ ! -n "$NO_MESSAGES_TO_SEND" ]
+then
+  echo "No of messages to send set to default 1"
+  export NO_MESSAGES_TO_SEND=1
+else 
+  echo "No of messages to send set to " $NO_MESSAGES_TO_SEND
+fi
+
+for ((i=1;i<=$NO_MESSAGES_TO_SEND;i++));
 do
 
 message=$(LC_CTYPE=C tr -dc A-Za-z0-9 < /dev/urandom | head -c 10 | xargs)

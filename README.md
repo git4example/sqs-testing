@@ -19,9 +19,9 @@ docker push hello2parikshit/sqs-testing
 
 By default try to receive 1 message and process it : 
 ```
-docker run -it hello2parikshit/sqs-testing 
+docker run -it -e NO_MESSAGES_TO_PROCESS=10 -e WAIT_TIME_TO_PROCESS_MESSAGE=30 -e WAIT_BEFORE_NEXT_MESSAGE=60 hello2parikshit/sqs-testing 
 ```
 Else use to send messages to the sqs : 
 ```
-docker run -it --entrypoint ./sendmessage.sh hello2parikshit/sqs-testing  <number of message>
+docker run -it -e NO_MESSAGES_TO_SEND=10 --entrypoint ./sendmessage.sh hello2parikshit/sqs-testing  <number of message>
 ```
