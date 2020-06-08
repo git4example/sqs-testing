@@ -38,7 +38,7 @@ message=$(aws sqs receive-message --queue-url https://sqs.ap-southeast-2.amazona
 
 if [ ! -n "$message" ]
 then
-  echo "No messages found, do nothing"
+  echo "No messages found, exit..."
   break
 else
   echo "Process message " $i "& wait " $WAIT_TIME_TO_PROCESS_MESSAGE " sec to delete message"
