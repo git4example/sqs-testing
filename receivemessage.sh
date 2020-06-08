@@ -46,12 +46,13 @@ else
 
   echo "Body:" $Body
   echo "ReceiptHandle:" $Handle
-  echo "sleeping for " $WAIT_TIME_TO_PROCESS_MESSAGE
+  echo "Waiting " $WAIT_TIME_TO_PROCESS_MESSAGE " sec to process this message"
   sleep $WAIT_TIME_TO_PROCESS_MESSAGE
 
   success=$(aws sqs delete-message --queue-url https://sqs.ap-southeast-2.amazonaws.com/064250592128/SQS4ECS --receipt-handle $Handle)
 
   echo "Sucessfully deleted : " $Body
+  echo "Waiting time " $WAIT_BEFORE_NEXT_MESSAGE " sec before next"
   sleep $WAIT_BEFORE_NEXT_MESSAGE
 fi
 
